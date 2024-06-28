@@ -136,49 +136,6 @@ class ImageOptionsMenu extends StatelessWidget {
                 await configurations.onImageRemovedCallback.call(imageSource);
               },
             ),
-          if (!kIsWeb)
-            ListTile(
-              leading: const Icon(Icons.save),
-              title: Text(context.loc.save),
-              onTap: () async {
-                final messenger = ScaffoldMessenger.of(context);
-                final localizations = context.loc;
-                Navigator.of(context).pop();
-
-                final saveImageResult = await saveImage(
-                  imageUrl: imageSource,
-                  imageSaverService: imageSaverService,
-                );
-                final imageSavedSuccessfully = saveImageResult.error == null;
-
-                messenger.clearSnackBars();
-
-                if (!imageSavedSuccessfully) {
-                  messenger.showSnackBar(SnackBar(
-                      content: Text(
-                    localizations.errorWhileSavingImage,
-                  )));
-                  return;
-                }
-
-                var message = switch (saveImageResult.method) {
-                  SaveImageResultMethod.network =>
-                    localizations.savedUsingTheNetwork,
-                  SaveImageResultMethod.localStorage =>
-                    localizations.savedUsingLocalStorage,
-                };
-
-                if (isDesktop(supportWeb: false)) {
-                  message = localizations.theImageHasBeenSavedAt(imageSource);
-                }
-
-                messenger.showSnackBar(
-                  SnackBar(
-                    content: Text(message),
-                  ),
-                );
-              },
-            ),
           ListTile(
             leading: const Icon(Icons.zoom_in),
             title: Text(context.loc.zoom),
